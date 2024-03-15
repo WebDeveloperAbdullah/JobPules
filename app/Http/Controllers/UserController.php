@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helper\JWTToken;
 use App\Mail\OTPMail;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -52,24 +53,46 @@ class UserController extends Controller
    $count = User::where("email", $email)->where('password',$enCpassword)->where('active',$activeUser)->select('id')->first();
    if($count!==null){
     $token=JWTToken::generateToken($email,$count->id);
+  $request->session()->put('token', $token);
 
+    $data=User::where('id',$count->id)->get();
+    foreach ($data as $key => $value) {
+        $role_id=$value->role_id;
 
-    return redirect('/dashboard_owner')->with('success','Welcome Admin Panal')->cookie('token',$token,time()+60*24*30);
+    }
+    if($role_id==1){
+        return redirect('/dashboard_owner')->with('success','Welcome Admin Panal As A Website Owner !')->cookie('token',$token,time()+60*24*30);
+    }elseif($role_id==2){
+        return redirect('/dashboard_admin')->with('success','Welcome Admin Panal As A Website Admin !')->cookie('token',$token,time()+60*24*30);
+    }elseif($role_id==3){
+        return redirect('/dashboard_companie')->with('success','Welcome Admin Panal As A  Companie  !')->cookie('token',$token,time()+60*24*30);
+    }elseif($role_id==4){
+        return redirect('/dashboard_employe')->with('success','Welcome Admin Panal As A Companie Employe !')->cookie('token',$token,time()+60*24*30);
+    }elseif($role_id==5){
+        return redirect('/dashboard_candidete')->with('success','Welcome Admin Panal As A Companie Candidete !')->cookie('token',$token,time()+60*24*30);
+    }
+
    }else{
     return back()->with('error',' Email And Password invalid!');
    }
 }
 
 
-function userLogout(){
+function logOut(){
         return redirect('/login')->cookie('token','',-1);
     }
 
 
-    public function admin_list(){
+    public function admin_list(Request $request){
+        $id=$request->header('id');
+        $data=User::where('id',$id)->get();
+    foreach ($data as $key => $value) {
+        $role_id=$value->role_id;
+
+    }
         $datas=User::paginate(4);
 
-        return view('BackEnd.pages.admin.admin_list',compact('datas'));
+        return view('BackEnd.pages.admin.admin_list',compact('datas'))->with('role_id',$role_id);
     }
 
 
@@ -103,19 +126,57 @@ public function admin_active($id, $active){
     }
 }
 public function admin_edit_page($id){
+ $data=Role::all();
 
-    $data=DB::table('users')->leftJoin('user_profiles','users.id','=','user_profiles.user_id')->leftJoin('roles','users.role_id','=','roles.id')->where('users.id',$id)->get();
-    return view('BackEnd.pages.admin.admin_edit_page',compact("data"));
+    $dataRole=DB::table('users')->leftJoin('user_profiles','users.id','=','user_profiles.user_id')->leftJoin('roles','users.role_id','=','roles.id')->where('users.id',$id)->get();
+    foreach ($dataRole as $key => $value) {
+        $name=$value->name;
+
+    }
+
+    return view('BackEnd.pages.admin.admin_edit_page',compact('data','dataRole'))->with('name',$name)->with('id',$id);
 }
 
 public function search(Request $request){
     $this->validate($request, [
         "search"=> "required"
     ]);
+    $id=$request->header('id');
+    $data=User::where('id',$id)->get();
+foreach ($data as $key => $value) {
+    $role_id=$value->role_id;
+
+}
     $search=$request->search;
     $datas=DB::table('users')->leftJoin('user_profiles','users.id','=','user_profiles.user_id')->leftJoin('roles','users.role_id','=','roles.id')->where('users.email','LIKE', "%" .$search."%")->paginate(4);
 
-    return view('BackEnd.pages.admin.admin_list',compact('datas'));
+    return view('BackEnd.pages.admin.admin_list',compact('datas'))->with('role_id',$role_id);
+
+
+}
+
+public function user_update(Request $request){
+    $role_id=$request->role_id;
+    $id=$request->id;
+
+    User::where('id',$id)->update(['role_id'=>$role_id]);
+    return redirect('/admin_list')->with('success','Website User update Success!');
+
+
+}
+
+
+public function user_delete($id){
+User::where('id', $id)->delete();
+
+    return redirect('/admin_list')->with('success',' User Delete Success!');
+}
+
+ public function admin_details($id){
+    $datas=DB::table('users')->leftJoin('user_profiles','users.id','=','user_profiles.user_id')->leftJoin('roles','users.role_id','=','roles.id')->where('users.id',$id)->get();
+
+    return ;
+
 
 
 }

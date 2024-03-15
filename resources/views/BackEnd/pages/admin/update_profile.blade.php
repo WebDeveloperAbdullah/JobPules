@@ -1,4 +1,4 @@
-@extends('BackEnd.layout.app')
+@extends('BackEnd.layout.onwer')
 
 @section('content')
 
@@ -50,7 +50,7 @@
 				<div class="col-lg-8">
 					<div class="card">
 						<div class="card-body">
-                            <form action="{{ route('profileUpdateCore') }}" enctype="multipart/form-data" method="post">
+                            <form action="" enctype="multipart/form-data" method="post">
                                 @csrf
 							<div class="row mb-3">
 								<div class="col-sm-3">

@@ -1,4 +1,4 @@
-@extends('BackEnd.layout.app')
+@extends('BackEnd.layout.onwer')
 
 @section('content')
 
@@ -11,7 +11,7 @@
               <!-- Breadcrumb -->
               <nav aria-label="breadcrumb" class="main-breadcrumb">
                 <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                  <li class="breadcrumb-item"><a href="">Home</a></li>
                   <li class="breadcrumb-item active" aria-current="page">User Profile</li>
                 </ol>
               </nav>
@@ -108,7 +108,7 @@
 
                       <div class="row">
                         <div class="col-sm-12">
-                          <a class="btn btn-info "  href="{{ route('profileEdit') }}">Update</a>
+                          <a class="btn btn-info "  href="{{ route('owaner_update') }}">Update</a>
                         </div>
                       </div>
                     </div>

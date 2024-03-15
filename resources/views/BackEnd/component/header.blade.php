@@ -7,10 +7,7 @@
       <div class="search-inner d-flex align-items-center justify-content-center">
         <div class="close-btn">Close <i class="fa fa-close"></i></div>
         <form id="searchForm" action="#">
-          <div class="form-group">
-            <input type="search" name="search" placeholder="What are you searching for...">
-            <button type="submit" class="submit">Search</button>
-          </div>
+
         </form>
       </div>
     </div>
@@ -73,7 +70,7 @@
 
         <!-- Log out               -->
         <div class="list-inline-item logout">
-              <a id="logout" href="" class="nav-link">Logout <i class="icon-logout"></i></a>
+              <a id="logout" href="{{ route('logOut') }}" class="nav-link">Logout <i class="icon-logout"></i></a>
             </div>
       </div>
     </div>
@@ -86,68 +83,78 @@
     <div class="sidebar-header d-flex align-items-center">
       <div class="avatar"><img src="{{ asset('assets/backEnd/img/avatar-1.jpg') }}" alt="..." class="img-fluid rounded-circle"></div>
       <div class="title">
-        <h1 class="h5">Mark Stephen</h1>
-        <p>Web Designer</p>
+        @foreach ($datas as $data )
+
+
+        @endforeach
+        <h1 class="h5">{{ $data->userName }}</h1>
+        <p>{{ $data->name }}</p>
       </div>
     </div>
     <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
     <ul class="list-unstyled">
             <li class="active"><a href=""> <i class="icon-home"></i>Dashboard </a></li>
             @php
+                if(session('role_id')){
+                   $role_id= session('role_id');
+                }
+                @endphp
+            <li class="active"><a href="{{ route('owaner_profile') }}"> <i class="icon-home"></i>Profile </a></li>
+                @if ($role_id==1)
+                <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Website User </a>
+                    <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
 
-            @endphp
-            <li class="active"><a href=""> <i class="icon-home"></i>Profile </a></li>
+                      <li><a href="{{ route('admin_list') }}"> User List</a></li>
 
-            <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Website User </a>
-              <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+                    </ul>
+                  </li>
 
-                <li><a href="{{ route('admin_list') }}"> User List</a></li>
+                @endif
+                <li><a href="#exampledropdownDropdown4" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Category </a>
+                    <ul id="exampledropdownDropdown4" class="collapse list-unstyled ">
+                      <li><a href="#">Category List</a></li>
 
-              </ul>
-            </li>
-            <li><a href="#exampledropdownDropdown1" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Companies </a>
-                <ul id="exampledropdownDropdown1" class="collapse list-unstyled ">
-                  <li><a href="">Companies List</a></li>
+                    </ul>
+                  </li>
 
-                </ul>
-              </li>
-            <li><a href="#exampledropdownDropdown2" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Jobs </a>
-                <ul id="exampledropdownDropdown2" class="collapse list-unstyled ">
-                  <li><a href="#">Page</a></li>
-
-                </ul>
-              </li>
-              <li><a href="#exampledropdownDropdown3" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Employee </a>
-                <ul id="exampledropdownDropdown3" class="collapse list-unstyled ">
-                  <li><a href="#">Page</a></li>
-
-                </ul>
-              </li>
-              <li><a href="#exampledropdownDropdown4" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Blogs </a>
+            <li><a href="#exampledropdownDropdown4" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Blogs </a>
                 <ul id="exampledropdownDropdown4" class="collapse list-unstyled ">
                   <li><a href="#">Page</a></li>
 
                 </ul>
               </li>
-              <li><a href="#exampledropdownDropdown5" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Pages </a>
-                <ul id="exampledropdownDropdown5" class="collapse list-unstyled ">
-                  <li><a href="#">Page</a></li>
+
+
+            @if ($role_id==3)
+            <li><a href="#exampledropdownDropdown1" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Companies </a>
+                <ul id="exampledropdownDropdown1" class="collapse list-unstyled ">
+                  <li><a href="">Employ List</a></li>
 
                 </ul>
               </li>
-              <li><a href="#exampledropdownDropdown6" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Plugins </a>
-                <ul id="exampledropdownDropdown6" class="collapse list-unstyled ">
-                  <li><a href="#">Page</a></li>
 
-                </ul>
-              </li>
-              <li><a href="#exampledropdownDropdown7" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Accounts Settings </a>
-                <ul id="exampledropdownDropdown7" class="collapse list-unstyled ">
-                  <li><a href="#">Page</a></li>
+            @endif
 
-                </ul>
-              </li>
-            <li><a href="login.html"> <i class="icon-logout"></i>Login page </a></li>
+
+        @if ($role_id==3 ||$role_id==4)
+
+        <li><a href="#exampledropdownDropdown1" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Job Category </a>
+            <ul id="exampledropdownDropdown1" class="collapse list-unstyled ">
+              <li><a href=""> Job Category List</a></li>
+
+            </ul>
+          </li>
+        <li><a href="#exampledropdownDropdown1" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i> Job </a>
+            <ul id="exampledropdownDropdown1" class="collapse list-unstyled ">
+              <li><a href=""> Post List</a></li>
+
+            </ul>
+          </li>
+
+        @endif
+
+
+
     </ul>
 
   </nav>

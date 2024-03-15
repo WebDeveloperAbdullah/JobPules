@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Model
 {
+    use HasRoles;
     protected $fillable = ['email','otp','password','role_id'] ;
     protected $attributes=  [
         'active'=>1,

@@ -13,32 +13,21 @@ use Illuminate\View\View;
 
 class UserProfileController extends Controller
 {
-    public function owanerProfile(Request $request){
+    public function owaner_profile(Request $request){
 
         $data=DB::table('users')->leftJoin('user_profiles','users.id','=','user_profiles.user_id')
         ->leftJoin('roles','users.role_id','=','roles.id')->where('users.id','=',$request->header('id'))->get();
 
         return view('BackEnd.pages.admin.profile',compact('data'));
-
-
     }
 
-    public function adminProfile(Request $request){
-
-
-
-
-
-
+    public function admin_profile(Request $request){
 
         $data=DB::table('users')->join('user_profiles','users.id','=','user_profiles.user_id')->where('users.id','=',$request->header('id'))->get();
-
         return view('BackEnd.pages.admin.profile',compact('data'));
-
-
     }
-    public function profileEdit(){
-        return view('BackEnd.pages.admin.updateProfile');
+    public function owaner_update(){
+        return view('BackEnd.pages.admin.update_profile');
     }
     public function profileUpdateCore(Request $request){
         $this->validate($request, [

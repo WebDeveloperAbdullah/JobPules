@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class CompanieProfileController extends Controller
 {
-    public function companineProfile(Request $request){
+    public function companie_profile(Request $request){
 
         return view('BackEnd.pages.companie.profile');
     }

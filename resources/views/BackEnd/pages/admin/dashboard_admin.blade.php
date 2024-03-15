@@ -1,4 +1,4 @@
-@extends('BackEnd.layout.app')
+@extends('BackEnd.layout.onwer')
 
 @section('content');
 
@@ -13,12 +13,6 @@
                             </div>
                             @endif
 
-
-
-
 </section>
-
-
-
 
 @endsection

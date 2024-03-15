@@ -1,4 +1,4 @@
-@extends('BackEnd.layout.app')
+@extends('BackEnd.layout.onwer')
 @section('content');
 <section class="no-padding-bottom">
     @if(session('success'))
@@ -23,8 +23,19 @@
                                     </div>
                                   </div>
                                     <div class="table-responsive">
+                                    @php
+                                    if(session('role_id')){
+                                        $role_id=session('role_id');
 
-                                            <a class="btn btn-sm btn-success" href="{{ route('create_admin') }}">User Add</a>
+                                    }
+                                    @endphp
+
+                                    @if ($role_id==1)
+                                    <a class="btn btn-sm btn-success" href="{{ route('create_admin') }}">User Add</a>
+
+                                    @endif
+
+
                                  <table class="table table-striped">
                                         <thead>
                                         <tr>
@@ -32,43 +43,64 @@
                                           <th>Active</th>
                                           <th>Action</th>
                                           <th>User Email</th>
+                                          <th>User Lavel</th>
 
 
 
                                          </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($datas as $data )
+                                            @foreach ($datas as $index => $data )
                                             @php
+                                            $roleID=$data->role_id;
                                             $active=$data->active;
 
                                             $user_id=$data->id;
                                             @endphp
                                             <tr>
-                                                <th >{{ $user_id}}</th>
+                                                <th >{{ $index+1;}}</th>
                                                 <td>
 
                                                     @if ($active==1)
-                                                    <a class="btn btn-sm btn-success btn-sm" href="{{url('admin_active',[$user_id,$active])}}">Active</a>
+                                                    <a class="btn btn-sm btn-success btn-sm" href="{{url('admin_active',[$data->id,$active])}}">Active</a>
                                                     @else
-                                                    <a class="btn btn-sm btn-danger btn-sm" href="{{url('admin_active',[$user_id,$active])}}">DeActive</a>
+                                                    <a class="btn btn-sm btn-danger btn-sm" href="{{url('admin_active',[$data->id,$active])}}">DeActive</a>
                                                     @endif
 
                                                     </td>
                                                     <td>
 
                                                         <a class="btn btn-info btn-sm" href="{{ url('admin_edit_page',$data->id) }}">Edit</a>
+                                                        <a class="btn btn-info btn-sm" href="{{ url('admin_details',$data->id) }}">Details</a>
+                                                        @php
+                                                        if(session('role_id')){
+                                                            $role_id=session('role_id');
+                                                        }
+                                                        @endphp
 
-                                                        <a class="btn btn-info btn-sm" href="{{ url('adminDetails',$data->id) }}">Details</a>
-
-                                                        <a class="btn btn-danger btn-sm" href="{{ url('adminDetails',$data->id) }}">Delete</a>
-
+                                                      @if ($role_id==1)
+                                                        <a class="btn btn-danger btn-sm" href="{{ url('user_delete',$data->id) }}">Delete</a>
+                                                        @endif
                                                         </td>
 
                                                     <td>{{ $data->email }}</td>
-
-
-
+                                                    <td>
+                                                        @if ($roleID==1)
+                                                            Owner
+                                                        @endif
+                                                        @if ($roleID==2)
+                                                        Admin
+                                                        @endif
+                                                        @if ($roleID==3)
+                                                        companie
+                                                        @endif
+                                                        @if ($roleID==4)
+                                                            Empoly
+                                                        @endif
+                                                        @if ($roleID==5)
+                                                        Candidate
+                                                        @endif
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
